@@ -16,6 +16,7 @@ public class ValuesSerializer {
                 byte b = 0x1D;
                 appendBytes = ByteBuffer.allocate(1).put(b).array();
                 baos.write(appendBytes);
+                baos.write(0x1D);
                 valuesIndex++;
                 continue;
             }
@@ -23,10 +24,12 @@ public class ValuesSerializer {
             Type type = Type.valueOf(Meta.getType(scheme.get(schemeIndex)));
             appendBytes = getBytes(values.get(valuesIndex), type);
             baos.write(appendBytes);
+            baos.write(0x1D);
             valuesIndex++;
             schemeIndex++;
         }
-        return null;
+        baos.write(0x1C);
+        return baos.toByteArray();
     }
 
     private byte[] getBytes(String value, Type type) {

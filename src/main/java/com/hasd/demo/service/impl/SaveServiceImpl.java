@@ -33,13 +33,12 @@ public class SaveServiceImpl {
         }
     }
 
-    public  void storeFieldNamesAndValues(JsonNode node, String parentPath, String outputPath, List<String> fieldValues, List<String> fieldNames) {
+    public  void storeFieldNamesAndValues(JsonNode node, List<String> fieldValues, List<String> fieldNames) {
         if (node.isObject()) {
             for (Iterator<Map.Entry<String, JsonNode>> it = node.fields(); it.hasNext();) {
                 Map.Entry<String, JsonNode> entry = it.next();
                 String fieldName = entry.getKey();
                 String fieldType = entry.getValue().getNodeType().name();
-                String fieldPath = parentPath + "." + fieldName;
                 String fieldValue = entry.getValue().asText();
                 if (fieldType.equals("NUMBER")) {
                         try {
@@ -61,7 +60,7 @@ public class SaveServiceImpl {
                     fieldValues.add(fieldValue);
                 }
 
-                storeFieldNamesAndValues(entry.getValue(), fieldPath, outputPath, fieldValues, fieldNames);
+                storeFieldNamesAndValues(entry.getValue(), fieldValues, fieldNames);
                 if (fieldType == "OBJECT") {
                     fieldValues.add("End of object");
                 }

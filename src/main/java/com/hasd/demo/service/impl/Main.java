@@ -23,10 +23,10 @@ public class Main {
             // Parse JSON into a JsonNode
             JsonNode jsonNode = mapper.readTree(json);
             // Extract field names and values
-            saveService.storeFieldNamesAndValues(jsonNode, "obj", "/home/alexmax/IdeaProjects/HASD/", fieldValues,
+            saveService.storeFieldNamesAndValues(jsonNode, fieldValues,
                     fieldNames);
-            saveService.writeToFile("/home/alexmax/IdeaProjects/HASD/fieldNames", fieldNames);
-            saveService.writeToFile("/home/alexmax/IdeaProjects/HASD/fieldValues", fieldValues);
+            saveService.writeToFile("/home/cunning/studying/HASD/fieldNames", fieldNames);
+            saveService.writeToFile("/home/cunning/studying/HASD/fieldValues", fieldValues);
 
             JsonNode node = parser.parseToJSON(fieldNames, fieldValues);
             System.out.println(mapper.writeValueAsString(node));

@@ -21,7 +21,7 @@ public class NamesDeserializer {
 //                    rowBuilder.setLength(0);
 //                    continue;
 //                } else
-                    if (fieldType == (byte) 0x00) {
+                    if (fieldType == (byte) 0x1C) {
                     return rows;
                 }
 

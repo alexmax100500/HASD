@@ -6,6 +6,6 @@ public class Meta {
         return meta.split(" ")[0];
     }
     public static String getType(String meta){
-        return meta.split(" ")[0];
+        return meta.split(" ")[1];
     }
 }
