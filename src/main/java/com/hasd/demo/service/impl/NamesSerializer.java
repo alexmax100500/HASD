@@ -28,7 +28,7 @@ public byte[] serializeRows(List<String> rows) {
             }
 
         //EOF byte
-        dataOutputStream.writeByte(0x00);
+        dataOutputStream.writeByte(0x1C);
         dataOutputStream.close();
     } catch (IOException e) {
         e.printStackTrace();

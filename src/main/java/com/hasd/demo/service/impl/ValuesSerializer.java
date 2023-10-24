@@ -1,15 +1,30 @@
 package com.hasd.demo.service.impl;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.util.List;
 
 public class ValuesSerializer {
-    public byte[] serializeRows(List<String> values, List<String> scheme) {
+    public byte[] serializeRows(List<String> values, List<String> scheme) throws IOException {
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
         int valuesIndex = 0;
         int schemeIndex = 0;
         byte[] appendBytes;
         while (valuesIndex < values.size()) {
-            appendBytes = getBytes(values.get(valuesIndex), Type.valueOf(Meta.getType(scheme.get(schemeIndex))));
+            if(values.get(valuesIndex).equals("End of object")){
+                byte b = 0x1D;
+                appendBytes = ByteBuffer.allocate(1).put(b).array();
+                baos.write(appendBytes);
+                valuesIndex++;
+                continue;
+            }
+
+            Type type = Type.valueOf(Meta.getType(scheme.get(schemeIndex)));
+            appendBytes = getBytes(values.get(valuesIndex), type);
+            baos.write(appendBytes);
+            valuesIndex++;
+            schemeIndex++;
         }
         return null;
     }
@@ -25,6 +40,7 @@ public class ValuesSerializer {
             case INTEGER:
                 return getIntBytes(value);
         }
+        return null;
     }
 
     private byte[] getIntBytes(String value) {
@@ -34,10 +50,22 @@ public class ValuesSerializer {
 
     private byte[] zigZag(int value) {
         int zigzagEncodedValue = (value << 1) ^ (value >> 31);
-        return ByteBuffer.allocate(4).putInt(zigzagEncodedValue).array();
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+
+        do {
+            byte b = (byte) (zigzagEncodedValue & 0x7F);
+            zigzagEncodedValue >>= 7;
+            if (zigzagEncodedValue != 0) {
+                b |= 0x80;
+            }
+            baos.write(b);
+        } while (zigzagEncodedValue != 0);
+
+        return baos.toByteArray();
     }
 
     private  byte[] getObjectBytes(String value) {
+        return new byte[]{0x1C};
     }
 
     private byte[] getStringBytes(String value) {
@@ -45,5 +73,7 @@ public class ValuesSerializer {
     }
 
     private byte[] getFloatBytes(String value) {
+        float floatValue = Float.parseFloat(value);
+        return ByteBuffer.allocate(4).putFloat(floatValue).array();
     }
 }

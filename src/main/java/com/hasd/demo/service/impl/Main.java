@@ -1,5 +1,6 @@
 package com.hasd.demo.service.impl;
 
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -35,6 +36,11 @@ public class Main {
             for (String s : strings) {
                 System.out.println(s);
             }
+            ValuesSerializer valuesSerializer = new ValuesSerializer();
+            byte[] valuesBytes = valuesSerializer.serializeRows(fieldValues, fieldNames);
+//            FileOutputStream fos = new FileOutputStream("/home/alexmax/IdeaProjects/HASD/fieldValues.bytes");
+//            fos.write(valuesBytes);
+            System.out.println(serializer.bytesToHex(valuesBytes));
         } catch (IOException e) {
             e.printStackTrace();
         }
