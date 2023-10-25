@@ -12,17 +12,15 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 public class Main {
     public static void main(String[] args) throws IOException {
         int am = 50;
-        String json = "{\"name\":\"John\",\"age\":30,\"city\":\"New York\", \"call\": {\"number\":1.3";
+        String json = "{\"name\":\"John\",\"age\":58,\"city\":\"New York\", \"call\": {\"number\":1.3";
         List<String> jsonList = new ArrayList<>();
-        for (int i = 0; i < am; i++){
-            if( i == 68){
-                continue;
-            }
+        for (int i = 0; i < am; i++) {
             jsonList.add(json + i + "}}");
         }
         Worker worker = new Worker();
         int hash = worker.saveBatch(jsonList);
         System.out.println(hash);
         List<String> jsonString = worker.readBatch(String.valueOf(hash), am);
+        System.out.println(jsonString);
     }
 }

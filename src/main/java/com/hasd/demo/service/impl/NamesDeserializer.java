@@ -16,7 +16,7 @@ public class NamesDeserializer {
         try {
             while (dataInputStream.available() > 0) {
                 byte fieldType = dataInputStream.readByte();
-                    if (fieldType == (byte) 0x1C) {
+                if (fieldType == (byte) 0x1C) {
                     return rows;
                 }
 
@@ -43,8 +43,8 @@ public class NamesDeserializer {
                     default:
                         throw new IllegalArgumentException("Invalid field type byte: " + fieldType);
                 }
-                    rows = appendRow(rows, rowBuilder.toString());
-                    rowBuilder.setLength(0);
+                rows = appendRow(rows, rowBuilder.toString());
+                rowBuilder.setLength(0);
             }
             dataInputStream.close();
         } catch (IOException e) {

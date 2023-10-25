@@ -16,7 +16,7 @@ import java.util.Deque;
 import java.util.List;
 
 public class JsonParser {
-    public  ObjectNode parseToJSON(List<String> fieldNames, List<String> fieldValues) {
+    public ObjectNode parseToJSON(List<String> fieldNames, List<String> fieldValues) {
         ObjectNode rootNode = JsonNodeFactory.instance.objectNode();
 
         Deque<JsonNode> parentStack = new ArrayDeque<>();
@@ -24,9 +24,9 @@ public class JsonParser {
 
         int namesIndex = 0;
         int valuesIndex = 0;
-        while (valuesIndex < fieldValues.size() && namesIndex <  fieldNames.size()) {
+        while (valuesIndex < fieldValues.size() && namesIndex < fieldNames.size()) {
             String fieldName = fieldNames.get(namesIndex).split(" ")[0];
-            String fieldType= fieldNames.get(namesIndex).split(" ")[1];
+            String fieldType = fieldNames.get(namesIndex).split(" ")[1];
             String fieldValue = fieldValues.get(valuesIndex);
 
             if (fieldValue.equals("Start of object")) {
@@ -35,19 +35,19 @@ public class JsonParser {
                 ((ObjectNode) parentStack.peek()).set(fieldName, objectNode);
                 // Push the new object node to the stack
                 parentStack.push(objectNode);
-            valuesIndex++;
-            namesIndex++;
+                valuesIndex++;
+                namesIndex++;
             } else if (fieldValue.equals("End of object")) {
-            parentStack.pop();
-            valuesIndex++;
+                parentStack.pop();
+                valuesIndex++;
             } else {
-            if(fieldType.equals("INTEGER")){
-                ((ObjectNode) parentStack.peek()).put(fieldName, Integer.parseInt(fieldValue));
-            } else if(fieldType.equals("FLOAT")){
-                ((ObjectNode) parentStack.peek()).put(fieldName, Float.parseFloat(fieldValue));
-            } else{
-                ((ObjectNode) parentStack.peek()).put(fieldName, fieldValue);
-            }
+                if (fieldType.equals("INTEGER")) {
+                    ((ObjectNode) parentStack.peek()).put(fieldName, Integer.parseInt(fieldValue));
+                } else if (fieldType.equals("FLOAT")) {
+                    ((ObjectNode) parentStack.peek()).put(fieldName, Float.parseFloat(fieldValue));
+                } else {
+                    ((ObjectNode) parentStack.peek()).put(fieldName, fieldValue);
+                }
                 valuesIndex++;
                 namesIndex++;
             }
@@ -56,7 +56,7 @@ public class JsonParser {
         return rootNode;
     }
 
-        public static byte[] serializeRows(String... rows) {
+    public static byte[] serializeRows(String... rows) {
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
         DataOutputStream dataOutputStream = new DataOutputStream(byteArrayOutputStream);
 
@@ -111,6 +111,7 @@ public class JsonParser {
         }
         return sb.toString();
     }
+
     public static String[] deserializeRows(byte[] serializedRows) {
         ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(serializedRows);
         DataInputStream dataInputStream = new DataInputStream(byteArrayInputStream);

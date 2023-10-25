@@ -8,12 +8,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class NamesSerializer {
-public byte[] serializeRows(List<String> rows) {
-    ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-    DataOutputStream dataOutputStream = new DataOutputStream(byteArrayOutputStream);
-    List<Byte> bytesList = new ArrayList<>();
-    try {
-        for (String row : rows) {
+    public byte[] serializeRows(List<String> rows) {
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        DataOutputStream dataOutputStream = new DataOutputStream(byteArrayOutputStream);
+        List<Byte> bytesList = new ArrayList<>();
+        try {
+            for (String row : rows) {
                 String[] parts = row.split(" ");
                 String type = parts[1];
                 String value = parts[0];
@@ -27,15 +27,15 @@ public byte[] serializeRows(List<String> rows) {
                 dataOutputStream.write(valueBytes);
             }
 
-        //EOF byte
-        dataOutputStream.writeByte(0x1C);
-        dataOutputStream.close();
-    } catch (IOException e) {
-        e.printStackTrace();
-    }
+            // EOF byte
+            dataOutputStream.writeByte(0x1C);
+            dataOutputStream.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
-    return byteArrayOutputStream.toByteArray();
-}
+        return byteArrayOutputStream.toByteArray();
+    }
 
     private byte[] encodeVLQ(int value) {
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
@@ -53,7 +53,6 @@ public byte[] serializeRows(List<String> rows) {
 
         return byteArrayOutputStream.toByteArray();
     }
-
 
     public static byte getFieldTypeByte(String type) {
         switch (type) {
