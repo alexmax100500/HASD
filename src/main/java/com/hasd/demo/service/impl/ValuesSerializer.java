@@ -13,7 +13,7 @@ public class ValuesSerializer {
         byte[] appendBytes;
         while (valuesIndex < values.size()) {
             if(values.get(valuesIndex).equals("End of object")){
-                byte b = 0x1D;
+                byte b = 0x1A;
                 appendBytes = ByteBuffer.allocate(1).put(b).array();
                 baos.write(appendBytes);
                 baos.write(0x1D);
@@ -68,7 +68,7 @@ public class ValuesSerializer {
     }
 
     private  byte[] getObjectBytes(String value) {
-        return new byte[]{0x1C};
+        return new byte[]{0x1B};
     }
 
     private byte[] getStringBytes(String value) {

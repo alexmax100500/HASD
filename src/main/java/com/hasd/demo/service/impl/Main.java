@@ -41,6 +41,11 @@ public class Main {
 //            FileOutputStream fos = new FileOutputStream("/home/alexmax/IdeaProjects/HASD/fieldValues.bytes");
 //            fos.write(valuesBytes);
             System.out.println(serializer.bytesToHex(valuesBytes));
+            ValuesDeserializer valuesDeserializer = new ValuesDeserializer();
+            List<String> deserializedValues = valuesDeserializer.deserializeRows(valuesBytes, fieldNames);
+            for(String s : deserializedValues){
+                System.out.println(s);
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }

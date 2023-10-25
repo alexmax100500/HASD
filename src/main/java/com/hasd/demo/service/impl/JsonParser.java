@@ -56,28 +56,6 @@ public class JsonParser {
         return rootNode;
     }
 
-
-    private static List<String> getFieldNames() {
-        List<String> fieldNames = new ArrayList<>();
-        fieldNames.add("name STRING");
-        fieldNames.add("age INTEGER");
-        fieldNames.add("city STRING");
-        fieldNames.add("call OBJECT");
-        fieldNames.add("number INTEGER");
-        return fieldNames;
-    }
-
-    private static List<String> getFieldValues() {
-        List<String> fieldValues = new ArrayList<>();
-        fieldValues.add("John");
-        fieldValues.add("30");
-        fieldValues.add("New York");
-        fieldValues.add("Start of object");
-        fieldValues.add("123");
-        fieldValues.add("End of object");
-        return fieldValues;
-    }
-
         public static byte[] serializeRows(String... rows) {
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
         DataOutputStream dataOutputStream = new DataOutputStream(byteArrayOutputStream);
