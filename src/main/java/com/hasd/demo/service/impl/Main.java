@@ -3,51 +3,26 @@ package com.hasd.demo.service.impl;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class Main {
-    public static void main(String[] args) {
-        SaveServiceImpl saveService = new SaveServiceImpl();
-        JsonParser parser = new JsonParser();
-
-        String json = "{\"name\":\"John\",\"age\":30,\"city\":\"New York\", \"call\": {\"number\":123}} }";
-        ObjectMapper mapper = new ObjectMapper();
-        List<String> fieldValues = new ArrayList<>();
-        List<String> fieldNames = new ArrayList<>();
-        NamesSerializer serializer = new NamesSerializer();
-        NamesDeserializer deserializer = new NamesDeserializer();
-        try {
-            // Parse JSON into a JsonNode
-            JsonNode jsonNode = mapper.readTree(json);
-            // Extract field names and values
-            saveService.storeFieldNamesAndValues(jsonNode, fieldValues,
-                    fieldNames);
-            saveService.writeToFile("/home/cunning/studying/HASD/fieldNames", fieldNames);
-            saveService.writeToFile("/home/cunning/studying/HASD/fieldValues", fieldValues);
-
-            JsonNode node = parser.parseToJSON(fieldNames, fieldValues);
-            System.out.println(mapper.writeValueAsString(node));
-            byte[] namesBytes = serializer.serializeRows(fieldNames);
-            System.out.println(serializer.bytesToHex(namesBytes));
-            String[] strings = deserializer.deserializeRows(namesBytes);
-            for (String s : strings) {
-                System.out.println(s);
+    public static void main(String[] args) throws IOException {
+        int am = 50;
+        String json = "{\"name\":\"John\",\"age\":30,\"city\":\"New York\", \"call\": {\"number\":1.3";
+        List<String> jsonList = new ArrayList<>();
+        for (int i = 0; i < am; i++){
+            if( i == 68){
+                continue;
             }
-            ValuesSerializer valuesSerializer = new ValuesSerializer();
-            byte[] valuesBytes = valuesSerializer.serializeRows(fieldValues, fieldNames);
-//            FileOutputStream fos = new FileOutputStream("/home/alexmax/IdeaProjects/HASD/fieldValues.bytes");
-//            fos.write(valuesBytes);
-            System.out.println(serializer.bytesToHex(valuesBytes));
-            ValuesDeserializer valuesDeserializer = new ValuesDeserializer();
-            List<String> deserializedValues = valuesDeserializer.deserializeRows(valuesBytes, fieldNames);
-            for(String s : deserializedValues){
-                System.out.println(s);
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
+            jsonList.add(json + i + "}}");
         }
+        Worker worker = new Worker();
+        int hash = worker.saveBatch(jsonList);
+        System.out.println(hash);
+        List<String> jsonString = worker.readBatch(String.valueOf(hash), am);
     }
 }

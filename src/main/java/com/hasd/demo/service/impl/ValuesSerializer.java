@@ -12,7 +12,7 @@ public class ValuesSerializer {
         int schemeIndex = 0;
         byte[] appendBytes;
         while (valuesIndex < values.size()) {
-            if(values.get(valuesIndex).equals("End of object")){
+            if (values.get(valuesIndex).equals("End of object")) {
                 byte b = 0x1A;
                 appendBytes = ByteBuffer.allocate(1).put(b).array();
                 baos.write(appendBytes);
@@ -33,7 +33,7 @@ public class ValuesSerializer {
     }
 
     private byte[] getBytes(String value, Type type) {
-        switch (type){
+        switch (type) {
             case FLOAT:
                 return getFloatBytes(value);
             case OBJECT:
@@ -67,8 +67,8 @@ public class ValuesSerializer {
         return baos.toByteArray();
     }
 
-    private  byte[] getObjectBytes(String value) {
-        return new byte[]{0x1B};
+    private byte[] getObjectBytes(String value) {
+        return new byte[] { 0x1B };
     }
 
     private byte[] getStringBytes(String value) {
@@ -77,6 +77,13 @@ public class ValuesSerializer {
 
     private byte[] getFloatBytes(String value) {
         float floatValue = Float.parseFloat(value);
-        return ByteBuffer.allocate(4).putFloat(floatValue).array();
+        final int bits = Float.floatToRawIntBits(floatValue);
+        byte[] buf = new byte[4];
+        buf[3] = (byte) (bits >>> 24);
+        buf[2] = (byte) (bits >>> 16);
+        buf[1] = (byte) (bits >>> 8);
+        buf[0] = (byte) (bits);
+        return buf;
     }
+
 }

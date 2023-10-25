@@ -16,16 +16,10 @@ public class NamesDeserializer {
         try {
             while (dataInputStream.available() > 0) {
                 byte fieldType = dataInputStream.readByte();
-//                if (fieldType == (byte) 0xFF) {
-//                    rows = appendRow(rows, rowBuilder.toString());
-//                    rowBuilder.setLength(0);
-//                    continue;
-//                } else
                     if (fieldType == (byte) 0x1C) {
                     return rows;
                 }
 
-                // Decode the value length using VLQ decoding
                 int valueLength = decodeVLQ(dataInputStream);
 
                 byte[] valueBytes = new byte[valueLength];

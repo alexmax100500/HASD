@@ -2,4 +2,4 @@ name STRING
 age INTEGER
 city STRING
 call OBJECT
-number INTEGER
+number FLOAT
